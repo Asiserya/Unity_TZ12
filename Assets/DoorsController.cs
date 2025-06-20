@@ -24,7 +24,14 @@ public class DoorsController : MonoBehaviour
 
             if (distance <= interactDistance)
             {
-               OpenDoor();
+                if (!isOpen)
+                {
+                    OpenDoor();
+                }
+                else 
+                {
+                    CloseDoor();
+                }
             }
         }
     }
@@ -33,13 +40,11 @@ public class DoorsController : MonoBehaviour
     {
         isOpen = true;
         animator.SetBool("isOpen", true);
-
-        Invoke("ClosingDoor", 3f);
     }
 
-    //void CloseDoor()
-    //{
-    //    isOpen = false;
-    //    animator.SetBool("isOpen", false);
-    //}
+    void CloseDoor()
+    {
+        isOpen = false;
+        animator.SetBool("isOpen", false);
+    }
 }
