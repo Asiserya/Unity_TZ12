@@ -5,46 +5,53 @@ public class DoorsController : MonoBehaviour
 {
     public float interactDistance = 2f;
     private Animator animator;
-    private GameObject player;
+    private Transform player;
     private bool isOpen = false;
+    private bool isInRange = false;
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+
+        if (player == null)
+        {
+            Debug.LogError("Player not found!");
+            enabled = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isInRange = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isInRange = false;
+        }
     }
 
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && isInRange)
         {
-            Debug.Log("Button passed");
-            float distance = Vector3.Distance(transform.position, player.transform.position);
-
-            if (distance <= interactDistance)
+            if (player != null &&
+                Vector3.Distance(transform.position, player.position) <= interactDistance)
             {
-                if (!isOpen)
-                {
-                    OpenDoor();
-                }
-                else 
-                {
-                    CloseDoor();
-                }
+                ToggleDoor();
             }
         }
     }
 
-    void OpenDoor()
+    void ToggleDoor()
     {
-        isOpen = true;
-        animator.SetBool("isOpen", true);
-    }
-
-    void CloseDoor()
-    {
-        isOpen = false;
-        animator.SetBool("isOpen", false);
+        isOpen = !isOpen;
+        animator.SetBool("isOpen", isOpen);
     }
 }
