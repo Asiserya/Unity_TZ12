@@ -1,34 +1,36 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class EnemyDamages : MonoBehaviour
 {
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
+    [SerializeField] private ParticleSystem bloodEffect;
+    [SerializeField] private float waitForSecond = 2f;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (SceneManager.GetActiveScene().buildIndex == 1)
+        if (other.CompareTag("Player") && other.transform != null)
         {
-            if (other.CompareTag("Player"))
-                SceneManager.LoadScene(1);
+            if (bloodEffect != null)
+            {
+                ParticleSystem effect = Instantiate(bloodEffect, other.transform.position, Quaternion.identity);
+                effect.Play();
+            }
+
+            StartCoroutine(ReloadAfterDelay(waitForSecond));
         }
-        else if (SceneManager.GetActiveScene().buildIndex == 2)
-        {
-            if (other.CompareTag("Player"))
-                SceneManager.LoadScene(2);
-        }
-        else if (SceneManager.GetActiveScene().buildIndex == 3)
-        {
-            if (other.CompareTag("Player"))
-                SceneManager.LoadScene(3);
-        }
+    }
+
+    private IEnumerator ReloadAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        RestartLevel();
+    }
+
+    public void RestartLevel()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
     }
 }
