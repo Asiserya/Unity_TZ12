@@ -7,7 +7,6 @@ namespace WildBall.Inputs
     {
         [SerializeField, Range(0, 10)] private float speed = 2.0f;
         private Rigidbody playerRigidbody;
-        private Vector3 movement;
 
         private void Awake()
         {

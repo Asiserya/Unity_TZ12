@@ -23,6 +23,11 @@ public class ExitToNextScene : MonoBehaviour
         else if (SceneManager.GetActiveScene().buildIndex == 3)
         {
             if (other.CompareTag("Player"))
+                SceneManager.LoadScene(4);
+        }
+        else if (SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            if (other.CompareTag("Player"))
                 SceneManager.LoadScene(0);
         }
     }

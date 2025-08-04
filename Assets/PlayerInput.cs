@@ -2,7 +2,7 @@ using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using WildBall.Inputs;
 
-namespace WaldBall.Inputs
+namespace WildBall.Inputs
 {
     [RequireComponent(typeof(PlayerMovement))]
     public class PlayerInput : MonoBehaviour
@@ -20,7 +20,8 @@ namespace WaldBall.Inputs
             float horizontal = Input.GetAxis(GlobalStringVars.HORIZONTAL_AXIS);
             float vertical = Input.GetAxis(GlobalStringVars.VERTICAL_AXIS);
 
-            movement = new Vector3(-horizontal, 0, -vertical).normalized;
+            movement = new Vector3(horizontal, 0, vertical).normalized;
+            
         }
 
         private void FixedUpdate()
